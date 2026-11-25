@@ -1,34 +1,48 @@
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect
+} from 'react';
 
 const RouterContext = createContext({
   currentPath: '/',
   navigate: () => {}
 });
 
-const BASE_URL = import.meta.env.BASE_URL;
+const BASE_URL = import.meta.env.BASE_URL || '/';
 
-function getAppPath() {
-  let path = window.location.pathname;
+// Convert GitHub Pages URL into an application route.
+function getAppPath(pathname) {
+  let path = pathname;
 
-  if (path.startsWith(BASE_URL)) {
+  if (BASE_URL !== '/' && path.startsWith(BASE_URL)) {
     path = '/' + path.slice(BASE_URL.length);
   }
 
-  return path || '/';
+  if (!path) return '/';
+
+  return path.startsWith('/') ? path : `/${path}`;
 }
 
+// Convert application route into a GitHub Pages URL.
 function getBrowserPath(path) {
-  const cleanPath = path.replace(/^\/+/, '');
-  return BASE_URL + cleanPath;
+  const appPath = getAppPath(path);
+
+  if (BASE_URL === '/') return appPath;
+
+  return BASE_URL + appPath.replace(/^\/+/, '');
 }
 
 export function Router({ children }) {
-  const [currentPath, setCurrentPath] = useState(getAppPath);
+  const [currentPath, setCurrentPath] = useState(() =>
+    getAppPath(window.location.pathname)
+  );
 
   useEffect(() => {
     const handlePopState = () => {
-      setCurrentPath(getAppPath());
+      setCurrentPath(getAppPath(window.location.pathname));
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -39,7 +53,8 @@ export function Router({ children }) {
   }, []);
 
   const navigate = (to, { replace = false } = {}) => {
-    const browserPath = getBrowserPath(to);
+    const appPath = getAppPath(to);
+    const browserPath = getBrowserPath(appPath);
 
     if (replace) {
       window.history.replaceState(null, '', browserPath);
@@ -47,7 +62,7 @@ export function Router({ children }) {
       window.history.pushState(null, '', browserPath);
     }
 
-    setCurrentPath(to);
+    setCurrentPath(appPath);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -62,10 +77,19 @@ export function useRouter() {
   return useContext(RouterContext);
 }
 
-export function Link({ href, className = '', children, onClick, ...props }) {
+export function Link({
+  href,
+  className = '',
+  children,
+  onClick,
+  ...props
+}) {
   const { navigate } = useRouter();
 
-  const browserHref = href.startsWith('/')
+  const isInternal =
+    href.startsWith('/') && !href.startsWith('//');
+
+  const browserHref = isInternal
     ? getBrowserPath(href)
     : href;
 
@@ -79,9 +103,7 @@ export function Link({ href, className = '', children, onClick, ...props }) {
       e.altKey ||
       e.ctrlKey ||
       e.shiftKey ||
-      href.startsWith('http://') ||
-      href.startsWith('https://') ||
-      href.startsWith('mailto:') ||
+      !isInternal ||
       props.target === '_blank'
     ) {
       return;
