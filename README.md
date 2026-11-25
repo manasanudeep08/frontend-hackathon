@@ -1,8 +1,8 @@
-# Dheeraj — Personal Portfolio Website
+# Manas Anudeep — Personal Portfolio Website
 
 A high-performance single-page personal portfolio engineered with a zero-bloat philosophy, light theme aesthetics, and native web standards.
 
-**Owner**: Dheeraj  
+**Owner**: Manas Anudeep 
 **Role**: Computer Science Student | Developer | Technology Enthusiast  
 **Education**: B.Tech Computer Science and Engineering, KL University (2025–2029)  
 **Location**: Vijayawada, Andhra Pradesh, India  
