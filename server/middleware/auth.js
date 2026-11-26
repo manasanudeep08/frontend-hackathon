@@ -93,12 +93,7 @@ export function parseCookies(cookieHeader = '') {
  * @returns {string}
  */
 export function serializeSessionCookie(token, maxAgeSeconds = DEFAULT_TTL_HOURS * 3600) {
-  const isProd = process.env.NODE_ENV === 'production';
-  let cookie = `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAgeSeconds}`;
-  if (isProd) {
-    cookie += '; Secure';
-  }
-  return cookie;
+  return `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=None; Secure; Max-Age=${maxAgeSeconds}`;
 }
 
 /**
@@ -106,12 +101,7 @@ export function serializeSessionCookie(token, maxAgeSeconds = DEFAULT_TTL_HOURS 
  * @returns {string}
  */
 export function serializeClearCookie() {
-  const isProd = process.env.NODE_ENV === 'production';
-  let cookie = `${COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`;
-  if (isProd) {
-    cookie += '; Secure';
-  }
-  return cookie;
+  return `${COOKIE_NAME}=; Path=/; HttpOnly; SameSite=None; Secure; Max-Age=0`;
 }
 
 /**

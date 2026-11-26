@@ -34,7 +34,14 @@ jobs:
         run: npm ci
 
       - name: Build portfolio
-        run: npm run build
+        run: |
+          if [ -z "$VITE_API_BASE" ]; then
+            echo "::error::Repository variable VITE_API_BASE is required (set it to your HTTPS Cloudflare Tunnel origin)."
+            exit 1
+          fi
+          npm run build
+        env:
+          VITE_API_BASE: ${{ vars.VITE_API_BASE }}
 
       - name: Upload dist
         uses: actions/upload-pages-artifact@v3

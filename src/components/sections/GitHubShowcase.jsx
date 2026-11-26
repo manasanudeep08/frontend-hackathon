@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SectionHeader } from '../common/SectionHeader.jsx';
 import { Badge } from '../common/Badge.jsx';
 import { siteConfig } from '../../config/siteConfig.js';
+import { API_BASE } from '../../services/apiBase.js';
 
 /**
  * GitHub Integration & Repositories Section
@@ -24,8 +25,8 @@ export function GitHubShowcase() {
 
         // Fetch profile and repos in parallel from native backend endpoints
         const [profileRes, reposRes] = await Promise.all([
-          fetch('/api/github/profile'),
-          fetch('/api/github/repos')
+          fetch(`${API_BASE}/github/profile`),
+          fetch(`${API_BASE}/github/repos`)
         ]);
 
         if (!profileRes.ok) {

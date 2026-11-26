@@ -130,6 +130,7 @@ function serveStaticFile(rawPathname, res) {
  * @param {import('node:http').ServerResponse} res
  */
 export async function dispatchRoute(req, res) {
+res.__request = req;
   // Reject directory traversal or null byte attempts on the raw request URL
   if (req.url.includes('..') || /%2e/i.test(req.url) || /%5c/i.test(req.url)) {
     return sendError(res, 403, 'Forbidden: Path traversal attempt blocked');

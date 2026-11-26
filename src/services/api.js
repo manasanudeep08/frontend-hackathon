@@ -3,7 +3,7 @@
  * Handles communication with the native Node.js HTTP backend.
  */
 
-const API_BASE = '/api';
+import { API_BASE } from './apiBase.js';
 
 /**
  * Submit contact form inquiry

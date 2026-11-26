@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { API_BASE } from '../services/apiBase.js';
 
 const AuthContext = createContext({
   user: null,
@@ -17,8 +18,9 @@ export function AuthProvider({ children }) {
 
   const refreshUser = useCallback(async () => {
     try {
-      const res = await fetch('/api/auth/me', {
+      const res = await fetch(`${API_BASE}/auth/me`, {
         method: 'GET',
+        credentials: 'include',
         headers: { Accept: 'application/json' }
       });
 
@@ -49,8 +51,9 @@ export function AuthProvider({ children }) {
   const login = async (username, password) => {
     let res;
     try {
-      res = await fetch('/api/auth/login', {
+      res = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
@@ -87,8 +90,9 @@ export function AuthProvider({ children }) {
   const register = async (username, password, fullName) => {
     let res;
     try {
-      res = await fetch('/api/auth/register', {
+      res = await fetch(`${API_BASE}/auth/register`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
@@ -132,8 +136,9 @@ export function AuthProvider({ children }) {
         headers['X-CSRF-Token'] = csrfToken;
       }
 
-      await fetch('/api/auth/logout', {
+      await fetch(`${API_BASE}/auth/logout`, {
         method: 'POST',
+        credentials: 'include',
         headers
       });
     } finally {

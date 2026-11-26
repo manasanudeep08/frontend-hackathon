@@ -116,6 +116,12 @@ npm run start
 ```
 The native Node.js HTTP server will serve both the compiled frontend single-page application and the `/api` endpoints simultaneously on `http://localhost:5050`.
 
+### Temporary GitHub Pages Demo Backend
+
+GitHub Pages hosts only the frontend. For the jury demo, run the backend on a reachable machine and expose port `5050` through an HTTPS Cloudflare Tunnel. Set the GitHub repository Actions variable `VITE_API_BASE` to the tunnel origin (for example, `https://YOUR-TUNNEL.trycloudflare.com`, without `/api`), then push or manually run the Pages workflow. The build fails with an error if this variable is missing.
+
+The server defaults to `127.0.0.1` locally and binds to `0.0.0.0` when `NODE_ENV=production`; it respects the hosting provider's `PORT`. The JSON data file and in-memory session map are temporary demo storage: accounts and portfolio data are local to that server, and all sessions are lost when the backend restarts. The Pages origin uses cross-site cookies, so the demo browser must allow third-party cookies for authentication to persist; browser privacy settings may block them.
+
 ### 4. Run Automated Tests
 ```bash
 npm test

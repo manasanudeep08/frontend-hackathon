@@ -3,7 +3,7 @@
  * Interacts with /api/student/portfolio and /api/p/:username
  */
 
-const API_BASE = '/api';
+import { API_BASE } from './apiBase.js';
 
 /**
  * Fetch the authenticated student's portfolio.

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useRouter, Link } from '../../router/Router.jsx';
+import { API_BASE } from '../../services/apiBase.js';
 
 /**
  * Basic Administrator Dashboard
@@ -27,8 +28,9 @@ export function AdminDashboard() {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch('/api/admin/overview', {
+      const res = await fetch(`${API_BASE}/admin/overview`, {
         method: 'GET',
+        credentials: 'include',
         headers: { Accept: 'application/json' }
       });
 
@@ -71,8 +73,9 @@ export function AdminDashboard() {
     setActionMessage(null);
 
     try {
-      const res = await fetch(`/api/admin/students/${student.id}/status`, {
+      const res = await fetch(`${API_BASE}/admin/students/${student.id}/status`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-Token': csrfToken || ''
@@ -102,8 +105,9 @@ export function AdminDashboard() {
     setActionMessage(null);
 
     try {
-      const res = await fetch(`/api/admin/students/${student.id}/portfolio/toggle-publish`, {
+      const res = await fetch(`${API_BASE}/admin/students/${student.id}/portfolio/toggle-publish`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-Token': csrfToken || ''
@@ -137,8 +141,9 @@ export function AdminDashboard() {
     setActionMessage(null);
 
     try {
-      const res = await fetch(`/api/admin/students/${student.id}`, {
+      const res = await fetch(`${API_BASE}/admin/students/${student.id}`, {
         method: 'DELETE',
+        credentials: 'include',
         headers: {
           'X-CSRF-Token': csrfToken || ''
         }

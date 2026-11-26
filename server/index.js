@@ -5,8 +5,8 @@ import { getDatabase, initAdmin, closeDatabase } from './db/database.js';
 import { getSessionSecret } from './middleware/auth.js';
 
 const PORT = parseInt(process.env.PORT, 10) || 5050;
-const HOST = process.env.HOST || '127.0.0.1';
 const IS_PROD = process.env.NODE_ENV === 'production';
+const HOST = process.env.HOST || (IS_PROD ? '0.0.0.0' : '127.0.0.1');
 
 // Initialize JSON file storage (data/portfolio-data.json)
 getDatabase();
@@ -39,7 +39,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`[Native HTTP Server] Running at http://localhost:${PORT}`);
+  console.log(`[Native HTTP Server] Listening on ${HOST}:${PORT}`);
   console.log(`[Native HTTP Server] Health check available at http://localhost:${PORT}/api/health`);
 });
 
